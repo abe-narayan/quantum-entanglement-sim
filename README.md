@@ -1,4 +1,3 @@
-Here's the raw text — copy this whole block and paste it straight into the GitHub editor (the fence marks below are just so it displays as plain text here, don't include those two lines):
 # Two-Particle Quantum Dynamics & Entanglement
 
 Two particles in a harmonic trap, with an interaction we can switch on
