@@ -1,26 +1,27 @@
+Here's the raw text — copy this whole block and paste it straight into the GitHub editor (the fence marks below are just so it displays as plain text here, don't include those two lines):
 # Two-Particle Quantum Dynamics & Entanglement
 
-Two particles in a harmonic trap. We turn on an interaction between them
-and watch entanglement show up — then check it against what classical
-physics would predict for the same setup.
+Two particles in a harmonic trap, with an interaction we can switch on
+and off. Point of this is to watch entanglement show up once it's on,
+and see how it stacks up against plain old classical physics.
 
 ## What's going on physically
 
-Each particle sits in a bowl-shaped trap, `V(x) = ½mω²x²`. On their own
-they just oscillate — nothing interesting happens between them. Once they
-can push on each other (soft-core Coulomb repulsion, `k/√((x₁-x₂)²+a²)`,
-a softened version so it doesn't blow up on the grid), their states get
-linked. That linkage is entanglement, and we track it with entanglement
-entropy over time.
+Each particle sits in a bowl-shaped trap, `V(x) = ½mω²x²`. Left alone
+they just oscillate, nothing links them together. Add soft-core Coulomb
+repulsion (`k/√((x₁-x₂)²+a²)`, softened so it doesn't blow up on the
+grid) and their states start getting tangled up with each other — that's
+entanglement, and we track how much with entanglement entropy over time.
 
-We're using split-operator with FFT to propagate the wavefunction — each
-sub-step is a pure phase, so it's exactly unitary no matter the step
-size. Probability doesn't leak, which is exactly what we need to trust.
+For propagating the wavefunction we're using split-operator with FFT.
+Each step is a pure phase, so it stays unitary no matter what step size
+we pick — no probability leaking out, which is really the main thing we
+need the method to guarantee.
 
 ## Phases
 
-We're building this up instead of writing it all at once, so bugs get
-caught early instead of tangled together later.
+Building this up in stages rather than all at once, so if something
+breaks we've got a decent idea where to look.
 
 | Phase | What it does | How we know it worked |
 |---|---|---|
@@ -30,32 +31,32 @@ caught early instead of tangled together later.
 | 4 | Classical comparison | Quantum vs. classical trajectories, side by side |
 | 5 (stretch) | Entropy vs. interaction strength | Only if we have time |
 
-Phase 2's the important one to not skip — if entropy shows up nonzero
-there, we know the bug's in our entropy code, not the physics.
+Don't skip Phase 2 — if entropy comes out nonzero there, it's the entropy
+code that's broken, not the physics.
 
 ## Files
 
-- `phase1_single_particle.py` — the foundation, validates the propagator
+- `phase1_single_particle.py` — foundation, validates the propagator
 - `phase2_two_particle_noninteracting.py` — validates the entropy code
 - `phase3_interacting.py` — the one we actually care about
 - `classical_comparison.py` — quantum vs. classical, side by side
-- `plots/` — where the figures land
+- `plots/` — figures land here
 
-Each script has a short description + TODO list at the top.
+Each script's got a short description and TODO list at the top.
 
 ## Running it
 
-```bash
 pip install numpy scipy matplotlib
 python phase1_single_particle.py
 python phase2_two_particle_noninteracting.py
 python phase3_interacting.py
 python classical_comparison.py
-```
-Run them in order — each one leans on the last.
+
+Run them in order, each one leans on the last.
 
 ## Worth agreeing on as a group first
 
 Grid resolution/extent, the softening length `a`, interaction strength
-`k`, and trap frequency `ω`. Changing these later means re-validating
-everything, so better to pick them together before anyone starts coding.
+`k`, trap frequency `ω`. Better to nail these down together before
+anyone starts coding — changing them later means re-validating
+everything.
