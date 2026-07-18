@@ -55,12 +55,12 @@ PV = np.exp(-1j * V * dt / (2 * h_bar))
 # Kinetic Energy
 KE = h_bar ** 2 * k ** 2 / (2 * m)
 # K Factor
-K_Facor = np.exp(-1j * kinetic_energy * dt / h_bar)
+K_Facor = np.exp(-1j * KE * dt / h_bar)
 # Laplacian
-D2 = scipy.sparse.diags(
-    [1.0, -2.0, 1.0], 
-    [-1.0, 0.0, 1.0],
-    shape=(x.size, x.size)) / dx ** 2
+#D2 = scipy.sparse.diags(
+#    [1.0, -2.0, 1.0], 
+#    [-1.0, 0.0, 1.0],
+#    shape=(x.size, x.size)) / dx ** 2
 # Expectation Value via Riemann Sums
 x_expectation = np.sum(x * np.abs(psi) ** 2) * dx
 
