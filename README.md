@@ -6,15 +6,15 @@ and see how it stacks up against plain old classical physics.
 
 ## What's going on physically
 
-Each particle sits in a bowl-shaped trap, `V(x) = ½mω²x²`. Left alone
-they just oscillate, nothing links them together. Add soft-core Coulomb
+Each particle sits in a bowl shaped trap, `V(x) = ½mω²x²`. Left alone
+they just oscillate, nothing links them together. Add soft core Coulomb
 repulsion (`k/√((x₁-x₂)²+a²)`, softened so it doesn't blow up on the
-grid) and their states start getting tangled up with each other — that's
+grid) and their states start getting tangled up with each other which is 
 entanglement, and we track how much with entanglement entropy over time.
 
 For propagating the wavefunction we're using split-operator with FFT.
 Each step is a pure phase, so it stays unitary no matter what step size
-we pick — no probability leaking out, which is really the main thing we
+we pick. No probability leaking out, which is really the main thing we
 need the method to guarantee.
 
 ## Phases
@@ -25,13 +25,10 @@ breaks we've got a decent idea where to look.
 | Phase | What it does | How we know it worked |
 |---|---|---|
 | 1 | One particle, just the trap | Norm holds, matches the known analytic solution |
-| 2 | Two particles, no interaction | Entropy stays ~0 (sanity-checks the entropy code) |
+| 2 | Two particles, no interaction | Entropy stays ~0 |
 | 3 | Interaction turned on | Entropy actually grows |
 | 4 | Classical comparison | Quantum vs. classical trajectories, side by side |
-| 5 (stretch) | Entropy vs. interaction strength | Only if we have time |
-
-Don't skip Phase 2 — if entropy comes out nonzero there, it's the entropy
-code that's broken, not the physics.
+| 5 | Entropy vs. interaction strength | Only if we have time |
 
 ## Files
 
@@ -57,5 +54,5 @@ Run them in order, each one leans on the last.
 
 Grid resolution/extent, the softening length `a`, interaction strength
 `k`, trap frequency `ω`. Better to nail these down together before
-anyone starts coding — changing them later means re-validating
+anyone starts coding, changing them later means re-validating
 everything.
