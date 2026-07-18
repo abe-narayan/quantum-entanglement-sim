@@ -25,7 +25,7 @@ breaks we've got a decent idea where to look.
 | Phase | What it does | How we know it worked |
 |---|---|---|
 | 1 | One particle, just the trap | Norm holds, matches the known analytic solution |
-| 2 | Two particles, no interaction | Entropy stays ~0 (sanity-checks the entropy code) |
+| 2 | Two particles, no interaction | Entropy stays ~0 |
 | 3 | Interaction turned on | Entropy actually grows |
 | 4 | Classical comparison | Quantum vs. classical trajectories, side by side |
 | 5 | Entropy vs. interaction strength | Only if we have time |
