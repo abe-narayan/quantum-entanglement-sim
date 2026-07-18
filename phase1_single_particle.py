@@ -17,6 +17,12 @@ before we build anything on top of it.
 
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
+import scipy
+from scipy.integrate import *
+from scipy import constants
+from scipy.sparse.linalg as spars
+import eigsh
 
 h_bar = 1.0
 m= 1.0
