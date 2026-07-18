@@ -28,7 +28,7 @@ breaks we've got a decent idea where to look.
 | 2 | Two particles, no interaction | Entropy stays ~0 (sanity-checks the entropy code) |
 | 3 | Interaction turned on | Entropy actually grows |
 | 4 | Classical comparison | Quantum vs. classical trajectories, side by side |
-| 5 (stretch) | Entropy vs. interaction strength | Only if we have time |
+| 5 | Entropy vs. interaction strength | Only if we have time |
 
 Don't skip Phase 2 — if entropy comes out nonzero there, it's the entropy
 code that's broken, not the physics.
