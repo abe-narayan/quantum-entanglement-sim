@@ -21,8 +21,6 @@ import seaborn as sns
 import scipy
 from scipy.integrate import *
 from scipy import constants
-from scipy.sparse.linalg as spars
-import eigsh
 
 h_bar = 1.0
 m= 1.0
@@ -44,6 +42,27 @@ psi = np.exp(-(x - x_0)**2 / (2 * sigma_0**2)) * np.exp(1j * k_0 * x)
 
 norm = np.sum(np.abs(psi)**2) * dx
 psi = psi / np.sqrt(norm)
+
+# Setting up the time axis
+dt = 0.1
+t_f = 10.0
+num_steps = int(t_f / dt)
+times = np.arange(num_steps + 1) * dt
+
+## QM equations
+# Potential
+PV = np.exp(-1j * V * dt / (2 * h_bar))
+# Kinetic Energy
+KE = h_bar ** 2 * k ** 2 / (2 * m)
+# K Factor
+K_Facor = np.exp(-1j * kinetic_energy * dt / h_bar)
+# Laplacian
+D2 = scipy.sparse.diags(
+    [1.0, -2.0, 1.0], 
+    [-1.0, 0.0, 1.0],
+    shape=(x.size, x.size)) / dx ** 2
+# Expectation Value via Riemann Sums
+x_expectation = np.sum(x * np.abs(psi) ** 2) * dx
 
 plt.figure()
 plt.plot(x, np.abs(psi)**2)
