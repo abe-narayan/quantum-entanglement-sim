@@ -29,7 +29,7 @@ x_min = -10.0
 x_max = 10.0
 N = 1024
 
-x = np.linspace(x_min, x_max, N)
+x = np.linspace(x_min, x_max, N, endpoint = False)
 dx = x[1] - x[0]
 
 k = 2 * np.pi * np.fft.fftfreq(N, d=dx)
@@ -50,19 +50,41 @@ num_steps = int(t_f / dt)
 times = np.arange(num_steps + 1) * dt
 
 ## QM equations
+# Velocity
+V = 0.5 * m * omega**2 * x**2
 # Potential
 PV = np.exp(-1j * V * dt / (2 * h_bar))
 # Kinetic Energy
 KE = h_bar ** 2 * k ** 2 / (2 * m)
 # K Factor
-K_Facor = np.exp(-1j * KE * dt / h_bar)
+K_Factor = np.exp(-1j * KE * dt / h_bar)
 # Laplacian
 #D2 = scipy.sparse.diags(
 #    [1.0, -2.0, 1.0], 
 #    [-1.0, 0.0, 1.0],
 #    shape=(x.size, x.size)) / dx ** 2
-# Expectation Value via Riemann Sums
+
+## Expectation Value via Riemann Sums
 x_expectation = np.sum(x * np.abs(psi) ** 2) * dx
+
+for step in range(1,num_steps + 1):
+  psi = split(psi)
+  # Probability Density Function
+  PDF = np.abs(psi)**2
+  norms[step] = np.sum(PDF) * dx
+  x_expectation[step] = np.sum(x * PDF) * dx
+
+## Split Operator
+def split(psi):
+  psi = PV * psi
+  psi_k = np.fft.fft(psi)
+  psi_k = K_factor * psi_k
+  psi = np.fft.ifft(psi_k)
+  psi = PV * psi
+  return psi
+
+## Center of Mass Motion
+CM_Harm = x_0 * np.cos(omega * times) + h_bar * k_0 / (m * omega) * np.sin(omega * times)
 
 plt.figure()
 plt.plot(x, np.abs(psi)**2)
