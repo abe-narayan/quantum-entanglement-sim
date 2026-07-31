@@ -1,4 +1,4 @@
-"""
+  """
 Phase 2 — two particles, no interaction yet.
 
 Point of this one is to isolate bugs: if entanglement entropy comes out
