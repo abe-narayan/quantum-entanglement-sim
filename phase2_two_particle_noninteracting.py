@@ -13,17 +13,17 @@ import matplotlib.pyplot as plt
 h_bar = 1.0
 m = 1.0
 omega = 1.0
-
+x_min = -10
+x_max = 10
 x = np.linspace(x_min,x_max,N,endpoint=False)
 dx = x[1] - x[0]
-
 k = 2.0 * np.pi * np.fft.fftfreq(N,d=dx)
+
 
 ## Matrix graph thing
 
 x1,x2 = np.meshgrid(x,x,indexing="ij")
-x1[i,j] == x[i]
-x2[i,j] == x[j]
+k1,k2 = np.meshgrid(k,k,indexing="ij")
 
 # Particle 1
 x1_0 = 2.0
@@ -38,18 +38,20 @@ k2_0 = 0.0
 # Wave equations
 
 psi1 = np.exp(-(x - x1_0)**2 / (2.0 * sigma1**2)) * np.exp(1j * k1_0 * x)
-psi2 = psi1
-norm = np.sum(np.abs(psi1)**2) * dx
-norm2 = np.sum(np.abs(psi2)**2) * dx
+psi2 = np.exp(-(x - x2_0)**2 / (2.0 * sigma1**2)) * np.exp(1j * k2_0 * x)
+
+psi1 = psi1 / np.sqrt( np.sum(np.abs(psi1)**2) * dx
+psi2 = psi2 / np.sqrt( np.sum(np.abs(psi2)**2) * dx
+                      
 PSI = psi1[:,np.newaxis] * psi2[np.newaxis,:] 
 
 ## Normalizing
 
-PSI = Psi / np.sqrt(np.sum(np.abs(Psi)**2) * dx**2)
+PSI = PSI / np.sqrt(np.sum(np.abs(PSI)**2) * dx**2)
 
 # Potential
 
-V = 0.5 * m * omega**2 * x1**2 + 0.5 * m * omega**2 * x2**2
+V = 0.5 * m * omega**2 * (x1**2 + x2**2)
 
 # Meshgrid
 
@@ -60,26 +62,21 @@ t_f = 10.0
 num_steps = int(t_f / dt)
 times = np.arange(num_steps + 1) * dt
 
-# Propagation
-
-P_Factor = np.exp(-1j * V * dt / (2.0 * h_bar))
-K_Factor = np.exp(-1j * KE * dt / h_bar)
-
 # Split Operator, refer to phase 1
 
 def Split_2d_non(PSI):
-  PSI = P_Factor * PSI
+  PSI = np.exp(-1j * V * dt / (2.0 * h_bar)) * PSI
   PSI_k = np.fft.fft(PSI)
-  PSI_k = K_factor * PSI_k
+  PSI_k = np.exp(-1j * KE * dt / h_bar) * PSI_k
   PSI = np.fft.ifft(PSI_k)
-  PSI = P_Factor * PSI
+  PSI = np.exp(-1j * V * dt / (2.0 * h_bar)) * PSI
   return psi
 
 # Normalize in time
 
 normz = np.zeros(num_steps + 1)
 
-normz[0] = np.sum(np.abs(Psi)**2) * dx**2
+normz[0] = np.sum(np.abs(PSI)**2) * dx**2
 
 for step in range(1, num_steps + 1):  
   PSI = Split_2d_non(PSI)
@@ -112,9 +109,9 @@ entropy_times = []
 entropies = []
 for step in range(1, num_steps + 1):
   PSI = split_2d_non(PSI)
-  normz[step] = np.sum(np.abs(Psi)**2) * dx**2
+  normz[step] = np.sum(np.abs(PSI)**2) * dx**2
   entropy_times.append(step * dt)
-  entropies.append(Entang_Entropy(Psi, dx))
+  entropies.append(Entang_Entropy(PSI, dx))
 
 # Plotting, again please debug & be careful as I'm not sure if this code might overload your devices
 
