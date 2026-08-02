@@ -56,7 +56,7 @@ V = 0.5 * m * omega**2 * (x1**2 + x2**2)
 # Meshgrid
 
 k1,k2 = np.meshgrid(k,k,indexing="ij")
-KE = h_bar**2 / (2.0 * m) * (k1 + k2)
+KE = h_bar**2 / (2.0 * m) * (k1**2 + k2**2)
 dt = 0.01
 t_f = 10.0
 num_steps = int(t_f / dt)
@@ -100,7 +100,7 @@ def Entang_Entropy(PSI,dx,cutoff=1e-20)
   entropy = -np.sum(prob * np.log(prob))
   return entropy
 
-# For a more specific cse, use dx = np.sqrt(dx1 + dx2)**2
+# For a more specific cse, use PSI * np.sqrt(dx1 * dx2)
 # If we do use this, please define dx1 & dx2
 
 # SVD
