@@ -38,13 +38,9 @@ k2_0 = 0.0
 # Wave equations
 
 psi1 = np.exp(-(x - x1_0)**2 / (2.0 * sigma1**2)) * np.exp(1j * k1_0 * x)
-
 psi2 = psi1
-
 norm = np.sum(np.abs(psi1)**2) * dx
-
 norm2 = np.sum(np.abs(psi2)**2) * dx
-
 PSI = psi1[:,np.newaxis] * psi2[np.newaxis,:] 
 
 ## Normalizing
@@ -58,12 +54,9 @@ V = 0.5 * m * omega**2 * x1**2 + 0.5 * m * omega**2 * x2**2
 # Meshgrid
 
 k1,k2 = np.meshgrid(k,k,indexing="ij")
-
 KE = h_bar**2 / (2.0 * m) * (k1 + k2)
-
 dt = 0.01
 t_f = 10.0
-
 num_steps = int(t_f / dt)
 times = np.arange(num_steps + 1) * dt
 
