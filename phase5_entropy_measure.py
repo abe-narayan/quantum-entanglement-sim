@@ -131,3 +131,66 @@ kinetic_energy = (
     /
     (2*m)
 )
+
+K_factor = np.exp(-1j *kinetic_energy * dt/h_bar)
+
+
+def do_one_step(wavefunction, potential_factor):
+
+    wavefunction = potential_factor * wavefunction
+    wavefunction = np.fft.fft2(wavefunction)
+    wavefunction = K_factor * wavefunction
+    wavefunction = np.fft.ifft2(wavefunction)
+    wavefunction = potential_factor * wavefunction
+
+    return wavefunction
+
+
+def get_entropy(wavefunction):
+
+    schmidt_values = np.linalg.svd(wavefunction * dx, compute_uv=False)
+    probabilities = schmidt_values**2
+    probabilities = probabilities[probabilities > 1e-16]
+    entropy = -np.sum(probabilities * np.log(probabilities))
+    
+    return entropy
+
+
+strengths_used = []
+final_entropies = []
+
+for strength in interaction_strengths:
+
+    # soft coulomb interaction for this strength
+    separation_squared = (x1 - x2)**2
+    interaction = strength / np.sqrt(separation_squared + a**2)
+    V_total = V_trap + interaction
+
+    potential_factor = np.exp(-1j *V_total*dt / (2*h_bar))
+
+    # fresh product state each run
+    current_wavefunction = Psi.copy()
+
+    step = 0
+    while step < num_steps:
+        current_wavefunction = do_one_step(current_wavefunction, potential_factor)
+        step = step + 1
+
+    entropy_at_end = get_entropy(current_wavefunction)
+
+    strengths_used.append(strength)
+    
+    final_entropies.append(entropy_at_end)
+
+    print("strength:", strength, "  final entropy:", entropy_at_end)
+
+
+# entropy vs interaction strength
+plt.figure()
+plt.plot(strengths_used, final_entropies, marker="o")
+plt.xlabel("Interaction strength")
+plt.ylabel("Final entanglement entropy")
+plt.title("Entanglement vs Interaction Strength")
+plt.grid()
+plt.savefig("plots/phase5_entropy_vs_strength.png")
+plt.show()
