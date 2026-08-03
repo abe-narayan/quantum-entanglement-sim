@@ -28,7 +28,7 @@ g = 1.0     # interaction strength (k is taken by the momentum grid)
 a = 0.5     # softening length
  
 dt = 0.005
-total_time = 11.5 # changed total time from 5 to 11.5
+total_time = 12.0
 num_steps = int(total_time / dt)
 
 #copy of simulation from phase 3
@@ -123,4 +123,4 @@ plt.title("Quantum vs Classical Two Particle Trajectories")
 plt.grid()
 plt.legend()
 plt.savefig("plots/classical_vs_quantum_trajectories.png")
-plt.close
+plt.close()

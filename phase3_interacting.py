@@ -30,7 +30,7 @@ g = 1.0     # interaction strength (k is taken by the momentum grid)
 a = 0.5     # softening length
  
 dt = 0.005
-total_time = 5.0
+total_time = 12.0
 num_steps = int(total_time / dt)
  
 # endpoint=False so the domain matches the period the FFT assumes
