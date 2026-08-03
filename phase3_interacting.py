@@ -16,7 +16,8 @@ entanglement entropy climb away from zero.
 
 import numpy as np
 import matplotlib.pyplot as plt
- 
+import matplotlib.animation as animation
+
 h_bar = 1.0
 m = 1.0
 omega = 1.0
@@ -49,6 +50,7 @@ psi_2 = np.exp(-(x + 2.0)**2 / 2)
  
 Psi = np.outer(psi_1, psi_2)
 Psi = Psi / np.sqrt(np.sum(np.abs(Psi)**2) * dx * dx)
+Psi_start = Psi.copy()
  
  
 ## Operators
@@ -98,19 +100,53 @@ print("Final norm:", np.sum(np.abs(Psi)**2) * dx * dx)
  
 ## Heat maps
  
-vmax = max(density.max() for t, density in snapshots)
- 
-fig, axes = plt.subplots(2, 3, figsize=(12, 8))
- 
-for ax, (t, density) in zip(axes.flat, snapshots):
-    ax.imshow(density.T, origin="lower", extent=[x_min, x_max, x_min, x_max],
-              cmap="inferno", vmin=0, vmax=vmax)
-    ax.set_title("t = " + str(round(t, 2)))
-    ax.set_xlabel("x1")
-    ax.set_ylabel("x2")
- 
-plt.tight_layout()
-plt.savefig("plots/phase3_heatmap.png")
+frames = []
+frame_times = []
+
+Psi = Psi_start.copy()
+
+step = 0
+while step <= num_steps:
+    if step % 5 == 0:
+        density = np.abs(Psi)**2
+        frames.append(density)
+        frame_times.append(step * dt)
+    Psi = split(Psi)
+
+    step = step + 1
+
+# use the same color scale for every frame
+vmax = 0.0
+
+for density in frames:
+    if density.max() > vmax:
+        vmax = density.max()
+
+
+# draw the first frame
+fig = plt.figure()
+
+image = plt.imshow(frames[0].T, origin="lower",
+                   extent=[x_min, x_max, x_min, x_max],
+                   cmap="inferno", vmin=0, vmax=vmax)
+plt.xlabel("x1")
+plt.ylabel("x2")
+title = plt.title("t = 0.0")
+
+
+# this runs once for each frame of the gif
+def update(frame_number):
+    this_density = frames[frame_number]
+    this_time = frame_times[frame_number]
+    image.set_data(this_density.T)
+    title.set_text("t = " + str(round(this_time, 2)))
+    return image, title
+
+
+# make the gif and save it
+number_of_frames = len(frames)
+ani = animation.FuncAnimation(fig, update, frames=number_of_frames, interval=100)
+ani.save("plots/phase3_density.gif", writer="pillow", fps=10)
 plt.close()
  
  
