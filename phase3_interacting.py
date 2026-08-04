@@ -7,7 +7,6 @@ entanglement entropy climb away from zero.
 """
 
 # TODO: add Vint = k / sqrtgit status
-((x1 - x2)**2 + a**2)
 # TODO: pick values for k (interaction strength) and a (softening length)
 # TODO: total potential = V(x1) + V(x2) + Vint(x1,x2)
 # TODO: propagate with the same 2D split-operator as Phase 2
