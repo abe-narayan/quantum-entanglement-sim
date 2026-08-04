@@ -54,7 +54,7 @@ num_steps = int(total_time / dt)
 PV = np.exp(-1j * V * dt / (2 * h_bar))
 
 
-kinetic_energy = h_bar * k**2 / (2 * m)
+kinetic_energy = h_bar**2 * k**2 / (2 * m)
 
 K_factor = np.exp(-1j * kinetic_energy * dt / h_bar)
 

@@ -39,7 +39,7 @@ k2_0 = 0.0
 # Wave equations
 
 psi1 = np.exp(-(x - x1_0)**2 / (2.0 * sigma1**2)) * np.exp(1j * k1_0 * x)
-psi2 = np.exp(-(x - x2_0)**2 / (2.0 * sigma1**2)) * np.exp(1j * k2_0 * x)
+psi2 = np.exp(-(x - x2_0)**2 / (2.0 * sigma2**2)) * np.exp(1j * k2_0 * x)
 
 psi1 = psi1 / np.sqrt( np.sum(np.abs(psi1)**2) * dx )
 psi2 = psi2 / np.sqrt( np.sum(np.abs(psi2)**2) * dx )
