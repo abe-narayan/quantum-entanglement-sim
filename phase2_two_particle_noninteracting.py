@@ -89,7 +89,7 @@ density_2d = np.abs(PSI)**2
 plt.imshow(density_2d.T, origin="lower", extent=[x_min, x_max, x_min, x_max], cmap="viridis")
 plt.xlabel(r"Particle 1 Position ($x_1$)", fontsize=12)
 plt.ylabel(r"Particle 2 Position ($x_2$)", fontsize=12)
-plt.title("2D Probability Density (Non-Interacting)", fontsize=14)
+plt.title("2D Probability Density (Not Interacting)", fontsize=14)
 plt.colorbar(label=r"$|\Psi(x_1, x_2)|^2$")
 plt.tight_layout()
 plt.savefig("plots/phase2_2d_density.png", dpi=150)
@@ -119,11 +119,11 @@ for step in range(1, num_steps + 1):
 
 # Plotting Entropy
 plt.figure(figsize=(8, 4))
-plt.plot(entropy_times, entropies, color="#d62728", linewidth=2)
+plt.plot(entropy_times, entropies, color="#ea0909", linewidth=2)
 plt.axhline(0.0, color="black", linestyle="--", alpha=0.5)
 plt.xlabel("Time", fontsize=12)
 plt.ylabel("Von Neumann Entropy", fontsize=12)
-plt.title("Entanglement Check (Should remain effectively 0)", fontsize=14)
+plt.title("Entanglement Check (Should be 0)", fontsize=14)
 plt.ylim(-1e-15, max(1e-15, max(entropies)*1.1)) # Force y-axis to show it's near zero
 plt.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
 plt.grid(True, linestyle="--", alpha=0.6)
