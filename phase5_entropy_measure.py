@@ -186,11 +186,19 @@ for strength in interaction_strengths:
 
 
 # entropy vs interaction strength
-plt.figure()
-plt.plot(strengths_used, final_entropies, marker="o")
-plt.xlabel("Interaction strength")
-plt.ylabel("Final entanglement entropy")
-plt.title("Entanglement vs Interaction Strength")
-plt.grid()
-plt.savefig("plots/phase5_entropy_vs_strength.png")
-plt.show()
+plt.figure(figsize=(8, 5))
+
+plt.plot(strengths_used, final_entropies, marker="o", markersize=8, 
+         linestyle="-", linewidth=2.5, color="#e377c2", markerfacecolor="#8c564b")
+
+plt.xlabel("Interaction Strength (g)", fontsize=12)
+plt.ylabel(f"Entanglement Entropy at t={total_time}", fontsize=12)
+plt.title("Final Entanglement Entropy vs Interaction Strength", fontsize=14)
+
+plt.grid(True, linestyle="--", alpha=0.6)
+plt.xticks(interaction_strengths)
+plt.ylim(bottom=0.0)
+
+plt.tight_layout()
+plt.savefig("plots/phase5_entropy_vs_strength.png", dpi=150)
+plt.close()

@@ -93,32 +93,34 @@ print(f"norm:    {np.sum(density[-1]) * dA:.12f}")
 print(f"energy:  {energy_start:.6f} -> {energy(Psi):.6f}")
 print(f"entropy: {entropies[0]:.2e} -> {entropies[-1]:.4f}")
  
-fig, ax = plt.subplots()
-image = ax.imshow(density[0].T, origin="lower", extent=[x_min, x_max, x_min, x_max],
-                  cmap="inferno", vmin=0.0, vmax=density.max())
-ax.set_xlabel("$x_1$")
-ax.set_ylabel("$x_2$")
-title = ax.set_title("t = 0.00")
-fig.colorbar(image, ax=ax, label=r"$|\Psi|^2$")
- 
- 
+fig = plt.figure(figsize=(7, 6))
+image = plt.imshow(density[0].T, origin="lower", extent=[x_min, x_max, x_min, x_max],
+                  cmap="magma", vmin=0.0, vmax=density.max())
+plt.xlabel(r"Particle 1 Position ($x_1$)", fontsize=12)
+plt.ylabel(r"Particle 2 Position ($x_2$)", fontsize=12)
+title = plt.title("Interacting Wavepacket: t = 0.00", fontsize=14)
+plt.colorbar(label=r"$|\Psi(x_1, x_2)|^2$")
+plt.tight_layout()
+
 def update(i):
     image.set_data(density[i].T)
-    title.set_text(f"t = {times[i]:.2f}")
+    title.set_text(f"Interacting Wavepacket: t = {times[i]:.2f}")
     return image, title
- 
- 
+
 ani = animation.FuncAnimation(fig, update, frames=n_samples, interval=100)
-ani.save("plots/phase3_density.gif", writer="pillow", fps=10)
-plt.close(fig)
- 
-fig, ax = plt.subplots()
-ax.plot(times, entropies)
-ax.set_xlabel("Time")
-ax.set_ylabel("Entanglement entropy")
-ax.set_xlim(0.0, times[-1])
-ax.set_ylim(bottom=0.0)
-fig.tight_layout()
-fig.savefig("plots/phase3_entropy.png", dpi=150)
-plt.close(fig)
+ani.save("plots/phase3_density.gif", writer="pillow", fps=15)
+plt.close()
+
+plt.figure(figsize=(8, 4))
+plt.plot(times, entropies, color="#9467bd", linewidth=2.5)
+plt.fill_between(times, entropies, color="#9467bd", alpha=0.2)
+plt.xlabel("Time", fontsize=12)
+plt.ylabel("Von Neumann Entropy", fontsize=12)
+plt.title("Growth of Entanglement via Soft-Coulomb Interaction", fontsize=14)
+plt.xlim(0.0, times[-1])
+plt.ylim(bottom=0.0)
+plt.grid(True, linestyle="--", alpha=0.6)
+plt.tight_layout()
+plt.savefig("plots/phase3_entropy.png", dpi=150)
+plt.close()
  

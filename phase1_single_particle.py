@@ -32,14 +32,8 @@ psi = np.exp(-(x - x_0)**2 / (2 * sigma_0**2)) * np.exp(1j * k_0 * x)
 norm = np.sum(np.abs(psi)**2) * dx
 psi = psi / np.sqrt(norm)
 
-
-plt.figure()
-plt.plot(x, np.abs(psi)**2)
-plt.xlabel("x")
-plt.ylabel("|psi(x)|^2")
-plt.title("Initial wavepacket")
-plt.savefig("plots/initial_wavepacket.png")
-plt.close()
+# Save initial probability density for combined plotting later
+initial_pdf = np.abs(psi)**2
 
 
 
@@ -128,38 +122,37 @@ print("Norm difference:", maximum_norm - minimum_norm)
 
 
 ## Center of Mass Motion
-
 CM_Harm = x_0 * np.cos(omega * np.array(times)) + h_bar * k_0 / (m * omega) * np.sin(omega * np.array(times))
 
-
-plt.figure()
-plt.plot(times, center_positions, label="Simulation")
-plt.plot(times, analytic_positions, "--", label="Analytic")
-plt.plot(times, CM_Harm, ":", label="CM Harmonic")
-plt.xlabel("Time")
-plt.ylabel("Center Position")
-plt.legend()
-plt.savefig("plots/center_of_mass.png")
+plt.figure(figsize=(8, 5))
+plt.plot(times, center_positions, label="Quantum Simulation", color="#1f77b4", linewidth=2)
+plt.plot(times, analytic_positions, "--", label="Analytic Expected", color="#ff7f0e", linewidth=2)
+plt.plot(times, CM_Harm, ":", label="Classical Harmonic", color="#2ca02c", linewidth=2)
+plt.xlabel("Time", fontsize=12)
+plt.ylabel(r"Center of Mass $\langle x \rangle$", fontsize=12)
+plt.title("Wavepacket Trajectory in Harmonic Trap", fontsize=14)
+plt.grid(True, linestyle="--", alpha=0.6)
+plt.legend(frameon=True, shadow=True)
+plt.tight_layout()
+plt.savefig("plots/center_of_mass.png", dpi=150)
 plt.close()
 
-
-
-plt.figure()
-plt.plot(times, norms[1:])
-plt.xlabel("Time")
-plt.ylabel("Norm")
-plt.savefig("plots/norm_vs_time.png")
-plt.close()
-
-
-
+## Combined Wavepacket Evolution Plot
 final_probability = np.abs(psi)**2
 
+plt.figure(figsize=(8, 5))
+plt.fill_between(x, initial_pdf, color="#1f77b4", alpha=0.3)
+plt.plot(x, initial_pdf, color="#1f77b4", linewidth=1.5, label="t = 0 (Initial)")
 
-plt.figure()
-plt.plot(x, final_probability)
-plt.xlabel("x")
-plt.ylabel("|psi(x)|^2")
-plt.title("Final wavepacket")
-plt.savefig("plots/final_wavepacket.png")
+plt.fill_between(x, final_probability, color="#d62728", alpha=0.3)
+plt.plot(x, final_probability, color="#d62728", linewidth=1.5, label=f"t = {total_time} (Final)")
+
+plt.xlabel("Position (x)", fontsize=12)
+plt.ylabel(r"Probability Density $|\psi(x)|^2$", fontsize=12)
+plt.title("Wavepacket Dispersion over Time", fontsize=14)
+plt.xlim(x_min/2, x_max/2)
+plt.grid(True, linestyle="--", alpha=0.6)
+plt.legend(frameon=True, shadow=True)
+plt.tight_layout()
+plt.savefig("plots/wavepacket_evolution.png", dpi=150)
 plt.close()

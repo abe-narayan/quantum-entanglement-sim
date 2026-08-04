@@ -111,16 +111,19 @@ x1_classical = solution.y[0]
 x2_classical = solution.y[2]
 
 # comparison plot
-plt.figure()
+plt.figure(figsize=(9, 5))
 
-plt.plot(times, x1_quantum_expected, label="Quantum <x1>")
-plt.plot(times, x2_quantum_expected, label="Quantum <x2>")
-plt.plot(times, x1_classical, "--",label="Classical x1")
-plt.plot(times, x2_classical, "--", label="Classical x2")
-plt.xlabel("Time")
-plt.ylabel("Position")
-plt.title("Quantum vs Classical Two Particle Trajectories")
-plt.grid()
-plt.legend()
-plt.savefig("plots/classical_vs_quantum_trajectories.png")
+plt.plot(times, x1_quantum_expected, label=r"Quantum $\langle x_1 \rangle$", color="#1f77b4", linewidth=4, alpha=0.6)
+plt.plot(times, x2_quantum_expected, label=r"Quantum $\langle x_2 \rangle$", color="#ff7f0e", linewidth=4, alpha=0.6)
+
+plt.plot(times, x1_classical, "--", label=r"Classical $x_1$", color="black", linewidth=1.5)
+plt.plot(times, x2_classical, "-.", label=r"Classical $x_2$", color="black", linewidth=1.5)
+
+plt.xlabel("Time", fontsize=12)
+plt.ylabel("Position", fontsize=12)
+plt.title("Quantum Expectation vs. Classical Trajectories", fontsize=14)
+plt.grid(True, linestyle="--", alpha=0.6)
+plt.legend(loc="upper right", frameon=True, shadow=True, fontsize=10)
+plt.tight_layout()
+plt.savefig("plots/classical_vs_quantum_trajectories.png", dpi=150)
 plt.close()

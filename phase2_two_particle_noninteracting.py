@@ -83,15 +83,16 @@ for step in range(1, num_steps + 1):
   PSI = Split_2d_non(PSI)
   normz[step] = np.sum(np.abs(PSI)**2) * dx**2
 
-# Plotting, please debug not sure if these are correct
-
-plt.figure()
-plt.plot(times, normz)
-plt.xlabel("Time")
-plt.ylabel("Normalized")
-plt.title("Two Non-Interacting Particles Normalized")
-plt.savefig("plots/2_Non_Interacting_Particles.png")
-plt.show()
+# Plotting 2D Density Product State
+plt.figure(figsize=(7, 6))
+density_2d = np.abs(PSI)**2
+plt.imshow(density_2d.T, origin="lower", extent=[x_min, x_max, x_min, x_max], cmap="viridis")
+plt.xlabel(r"Particle 1 Position ($x_1$)", fontsize=12)
+plt.ylabel(r"Particle 2 Position ($x_2$)", fontsize=12)
+plt.title("2D Probability Density (Non-Interacting)", fontsize=14)
+plt.colorbar(label=r"$|\Psi(x_1, x_2)|^2$")
+plt.tight_layout()
+plt.savefig("plots/phase2_2d_density.png", dpi=150)
 plt.close()
 
 # Entanglement/Entropy
@@ -116,14 +117,16 @@ for step in range(1, num_steps + 1):
   entropy_times.append(step * dt)
   entropies.append(Entang_Entropy(PSI, dx))
 
-# Plotting, again please debug & be careful as I'm not sure if this code might overload your devices
-
-plt.figure()
-plt.plot(entropy_times, entropies)
-plt.axhline(0.0, linestyle="-")
-plt.xlabel("Time")
-plt.ylabel("Entanglement")
-plt.title("Entanglement of Two Non-Interacting Particles")
-plt.savefig("plots/phase2_entropy_vs_time.png")
-plt.show()
+# Plotting Entropy
+plt.figure(figsize=(8, 4))
+plt.plot(entropy_times, entropies, color="#d62728", linewidth=2)
+plt.axhline(0.0, color="black", linestyle="--", alpha=0.5)
+plt.xlabel("Time", fontsize=12)
+plt.ylabel("Von Neumann Entropy", fontsize=12)
+plt.title("Entanglement Check (Should remain effectively 0)", fontsize=14)
+plt.ylim(-1e-15, max(1e-15, max(entropies)*1.1)) # Force y-axis to show it's near zero
+plt.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
+plt.grid(True, linestyle="--", alpha=0.6)
+plt.tight_layout()
+plt.savefig("plots/phase2_entropy_vs_time.png", dpi=150)
 plt.close()
