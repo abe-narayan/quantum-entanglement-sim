@@ -24,7 +24,7 @@ dx = x[1] - x[0]
 
 # Momentum grid
 
-k = 2 * np.pi * np.fft.fftfreq(N, d=dx)
+k = 2 * np.pi *np.fft.fftfreq(N, d=dx)
 
 # Initial particle positions
 

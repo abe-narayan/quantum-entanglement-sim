@@ -27,7 +27,7 @@ sigma_0 = 1.0
 
 k_0 = 0.0
 
-psi = np.exp(-(x - x_0)**2 / (2 * sigma_0**2)) * np.exp(1j * k_0 * x)
+psi = np.exp(-(x - x_0)**2 / (2 *sigma_0**2)) * np.exp(1j * k_0*x)
 
 norm = np.sum(np.abs(psi)**2) * dx
 psi = psi / np.sqrt(norm)
