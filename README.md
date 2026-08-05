@@ -35,7 +35,7 @@ problem was introduced.
 | 2 | Two particles, no interaction | Entanglement entropy stays at zero, as a product state requires |
 | 3 | Interaction turned on | Entropy grows from zero while energy and norm stay fixed |
 | 4 | Classical comparison | Quantum expectation values plotted against the classical trajectories |
-| 5 | Entropy vs. interaction strength | Sweep the coupling if time allows |
+| 5 | Entropy vs. interaction strength | Sweep the coupling |
 
 Phases 1 and 2 are deliberate validation steps. Phase 1 confirms the
 propagator itself is correct before we trust it with anything harder, and
