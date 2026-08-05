@@ -77,13 +77,7 @@ Psi = Psi / np.sqrt(norm)
 
 # Create two particle coordinate grid
 
-x1 = np.zeros((N,N))
-x2 = np.zeros((N,N))
-
-for i in range(N):
-    for j in range(N):
-        x1[i][j] = x[i]
-        x2[i][j] = x[j]
+x1, x2 = np.meshgrid(x, x, indexing="ij")
 
 # Harmonic trap potential
 
