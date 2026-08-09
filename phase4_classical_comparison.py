@@ -60,12 +60,15 @@ def split(Psi):
     Psi = np.fft.ifft2(K_factor * np.fft.fft2(Psi))
     Psi = PV * Psi
     return Psi
-times = [0.0]
+times = np.arange(num_steps + 1) * dt
+
+x1_quantum_expected = np.empty(num_steps + 1)
+x2_quantum_expected = np.empty(num_steps + 1)
 
 density = np.abs(Psi)**2
 
-x1_quantum_expected = [np.sum(x1 * density) * dx * dx] # expected positions
-x2_quantum_expected = [np.sum(x2 * density) * dx * dx]
+x1_quantum_expected[0] = np.sum(x1 * density) * dx * dx
+x2_quantum_expected[0] = np.sum(x2 * density) * dx * dx
 
 for step in range(1, num_steps + 1):
 
@@ -73,10 +76,10 @@ for step in range(1, num_steps + 1):
 
     density = np.abs(Psi)**2
 
-    x1_quantum_expected.append(np.sum(x1 * density) * dx * dx) 
-    x2_quantum_expected.append(np.sum(x2 * density) * dx * dx)
+    x1_quantum_expected[step] = (np.sum(x1 * density) * dx * dx)
 
-    times.append(step * dt)
+    x2_quantum_expected[step] = (np.sum(x2 * density) * dx * dx)
+
 
 def equations_of_motion(t, y): # required by solve_ivp, sets up dy/dt=f(t,y)
 
