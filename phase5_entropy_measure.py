@@ -112,10 +112,7 @@ num_steps = int(total_time / dt)
 k1 = np.zeros((N,N))
 k2 = np.zeros((N,N))
 
-for i in range(N):
-    for j in range(N):
-        k1[i][j] = k[i]
-        k2[i][j] = k[j]
+k1, k2 = np.meshgrid(k, k, indexing="ij")
 
 # Kinetic energy for both particles
 
