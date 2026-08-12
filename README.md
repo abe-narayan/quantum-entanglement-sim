@@ -45,13 +45,13 @@ bug.
 
 ## Files
 
-- `phase1.py` — single particle, validates the propagator
-- `phase2.py` — two particles, no interaction, validates the entropy code
-- `phase3.py` — the main result, entanglement under interaction
-- `phase4.py` — quantum expectation values against classical trajectories
-- `phase5.py` — entropy swept against interaction strength
-- `main.py` — runs every phase in order
-- `plots/` — generated figures are written here
+- `phase1.py` - single particle, validates the propagator
+- `phase2.py` - two particles, no interaction, validates the entropy code
+- `phase3.py` - the main result, entanglement under interaction
+- `phase4.py` - quantum expectation values against classical trajectories
+- `phase5.py` - entropy swept against interaction strength
+- `main.py` - runs every phase in order
+- `plots/` - generated figures are written here
 
 ## Running it
 
