@@ -70,7 +70,7 @@ Or run a single phase on its own, for example:
 Run them in order, since each phase builds on the validation done by the
 previous one.
 
-## Parameters to agree on as a group first
+## Parameters
 
 A few parameters are fixed: the grid
 resolution and extent, the softening length `a`, the interaction strength
