@@ -79,11 +79,25 @@ normz = np.zeros(num_steps + 1)
 
 normz[0] = np.sum(np.abs(PSI)**2) * dx**2
 
-for step in range(1, num_steps + 1):  
+# Entanglement/ntropy
+def Entang_Entropy(PSI, dx, cutoff=1e-20):
+  schmidt = np.linalg.svd(PSI * dx, compute_uv=False)
+  prob = schmidt**2
+  prob = prob[prob > cutoff]
+  entropy = -np.sum(prob * np.log(prob))
+  return entropy
+
+# propgation loop with entropy and norm
+entropy_times = []
+entropies = []
+for step in range(1, num_steps + 1):
   PSI = Split_2d_non(PSI)
   normz[step] = np.sum(np.abs(PSI)**2) * dx**2
+  entropy_times.append(step * dt)
+  entropies.append(Entang_Entropy(PSI, dx))
 
 # Plotting 2D Density Product State
+
 plt.figure(figsize=(7, 6))
 density_2d = np.abs(PSI)**2
 plt.imshow(density_2d.T, origin="lower", extent=[x_min, x_max, x_min, x_max], cmap="viridis")
@@ -93,40 +107,4 @@ plt.title("2D Probability Density (Not Interacting)", fontsize=14)
 plt.colorbar(label=r"$|\Psi(x_1, x_2)|^2$")
 plt.tight_layout()
 plt.savefig("plots/phase2_2d_density.png", dpi=150)
-plt.close()
-
-# Entanglement/Entropy
-
-def Entang_Entropy(PSI,dx,cutoff=1e-20):
-  schmidt = np.linalg.svd(PSI * dx, compute_uv=False)
-  prob = schmidt**2
-  prob = prob[prob > cutoff]
-  entropy = -np.sum(prob * np.log(prob))
-  return entropy
-
-# For a more specific cse, use PSI * np.sqrt(dx1 * dx2)
-# If we do use this, please define dx1 & dx2
-
-# SVD
-
-entropy_times = []
-entropies = []
-for step in range(1, num_steps + 1):
-  PSI = Split_2d_non(PSI)
-  normz[step] = np.sum(np.abs(PSI)**2) * dx**2
-  entropy_times.append(step * dt)
-  entropies.append(Entang_Entropy(PSI, dx))
-
-# Plotting Entropy
-plt.figure(figsize=(8, 4))
-plt.plot(entropy_times, entropies, color="#ea0909", linewidth=2)
-plt.axhline(0.0, color="black", linestyle="--", alpha=0.5)
-plt.xlabel("Time", fontsize=12)
-plt.ylabel("Von Neumann Entropy", fontsize=12)
-plt.title("Entanglement Check (Should be 0)", fontsize=14)
-plt.ylim(-1e-15, max(1e-15, max(entropies)*1.1)) # Force y-axis to show it's near zero
-plt.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
-plt.grid(True, linestyle="--", alpha=0.6)
-plt.tight_layout()
-plt.savefig("plots/phase2_entropy_vs_time.png", dpi=150)
 plt.close()
